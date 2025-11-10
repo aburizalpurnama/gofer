@@ -1,10 +1,17 @@
 package model
 
 type DBLibrary string
+type WebFramerowk string
 
 const (
 	SQLX DBLibrary = "sqlx"
 	GORM DBLibrary = "gorm"
+)
+
+const (
+	FIBER WebFramerowk = "fiber"
+	GIN   WebFramerowk = "gin"
+	CHI   WebFramerowk = "chi"
 )
 
 type TemplateField struct {
@@ -19,7 +26,6 @@ type ModelTemplateData struct {
 	StructName  string
 	TableName   string
 	Fields      []TemplateField
-	DBLibrary   DBLibrary
 }
 
 type RepositoryTemplateData struct {
@@ -28,5 +34,28 @@ type RepositoryTemplateData struct {
 	StructName  string
 	TableName   string
 	Fields      []TemplateField
-	DBLibrary   DBLibrary
+}
+
+type ServiceTemplateData struct {
+	PackageName string
+	Imports     []string // Daftar impor yang unik
+	StructName  string
+	TableName   string
+	Fields      []TemplateField
+}
+
+type HandlerTemplateData struct {
+	PackageName string
+	Imports     []string // Daftar impor yang unik
+	StructName  string
+	TableName   string
+	Fields      []TemplateField
+}
+
+type RoutesTemplateData struct {
+	PackageName string
+	Imports     []string // Daftar impor yang unik
+	StructName  string
+	TableName   string
+	Fields      []TemplateField
 }

@@ -28,8 +28,8 @@ func New(logger *slog.Logger) (*writer, error) {
 	return &writer{logger: logger, templates: tmpl}, nil
 }
 
-func (w *writer) WriteModel(ctx context.Context, targetPath string, data model.ModelTemplateData) error {
-	return w.writeGoFile(ctx, targetPath, "model.go.tpl", data)
+func (w *writer) WriteModel(ctx context.Context, targetPath string, templateName string, data model.ModelTemplateData) error {
+	return w.writeGoFile(ctx, targetPath, templateName, data)
 }
 
 // func (w *writer) WriteService(ctx context.Context, targetPath string, data model.ServiceTemplateData) {

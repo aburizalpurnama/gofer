@@ -2,22 +2,23 @@ package generator
 
 import (
 	"fmt"
+	"log/slog"
 
 	"github.com/aburizalpurnama/gofer/internal/contract"
 	"github.com/aburizalpurnama/gofer/internal/model"
 )
 
 type generator struct {
-	front   contract.FrontLayerGenerator
-	service contract.ServiceLayerGenerator
-	back    contract.BackLayerGenerator
+	Front   contract.FrontLayerGenerator
+	Service contract.ServiceLayerGenerator
+	Back    contract.BackLayerGenerator
 }
 
-func New(DBLibrary model.DBLibrary, webFramework model.WebFramerowk) (*generator, error) {
+func New(DBLibrary model.DBLibrary, webFramework model.WebFramerowk, logger *slog.Logger, writer contract.Writer) (*generator, error) {
 	var frontGen contract.FrontLayerGenerator
 	switch webFramework {
 	case model.FIBER:
-		frontGen = newfiberGenerator()
+		frontGen = newFiberGenerator(logger, writer)
 	case model.GIN:
 	case model.CHI:
 	default:
@@ -28,17 +29,17 @@ func New(DBLibrary model.DBLibrary, webFramework model.WebFramerowk) (*generator
 	var backGen contract.BackLayerGenerator
 	switch DBLibrary {
 	case model.GORM:
-		backGen = newGormGenerator()
+		backGen = newGormGenerator(logger, writer)
 	case model.SQLX:
 	default:
 		return nil, fmt.Errorf("invalid DBLibrary")
 	}
 
-	serviceGen := newserviceGenerator()
+	serviceGen := newServiceGenerator(logger, writer)
 
 	return &generator{
-		front:   frontGen,
-		service: serviceGen,
-		back:    backGen,
+		Front:   frontGen,
+		Service: serviceGen,
+		Back:    backGen,
 	}, nil
 }

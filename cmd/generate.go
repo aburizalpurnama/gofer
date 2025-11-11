@@ -4,9 +4,11 @@ Copyright © 2025 rizal_purnama <purnamar9@gmail.com>
 package cmd
 
 import (
-	"io/fs"
+	"log/slog"
 
-	"github.com/aburizalpurnama/gofer/internal/template"
+	"github.com/aburizalpurnama/gofer/internal/generator"
+	"github.com/aburizalpurnama/gofer/internal/model"
+	"github.com/aburizalpurnama/gofer/internal/writer"
 	"github.com/spf13/cobra"
 )
 
@@ -22,14 +24,36 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// initiate db
-		t, err := fs.ReadFile(template.Content, "model/sequelize.go.tpl")
-		if err != nil {
-			panic(err)
-		}
-
-		println(string(t))
 
 		// inject dependencies
+
+		logger := slog.Default()
+		writer, err := writer.New(logger)
+		if err != nil {
+			return err
+		}
+
+		gen, err := generator.New(model.GORM, model.FIBER, logger, writer)
+		if err != nil {
+			return err
+		}
+
+		err = gen.Back.GenerateModel(cmd.Context(), "internal/app/model/product.go", model.ModelTemplateData{
+			PackageName: "model",
+			Imports:     []string{"github.com/test"},
+			StructName:  "product",
+			TableName:   "products",
+			Fields: []model.TemplateField{
+				{
+					Name: "name",
+					Type: "string",
+					Tag:  `gorm:"column:name;notnull"`,
+				},
+			},
+		})
+		if err != nil {
+			return err
+		}
 
 		// run builder
 

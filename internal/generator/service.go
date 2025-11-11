@@ -15,8 +15,11 @@ type serviceGenerator struct {
 	writer contract.Writer
 }
 
-func newserviceGenerator() *serviceGenerator {
-	return &serviceGenerator{}
+func newServiceGenerator(logger *slog.Logger, writer contract.Writer) *serviceGenerator {
+	return &serviceGenerator{
+		logger: logger,
+		writer: writer,
+	}
 }
 
 func (b *serviceGenerator) GenerateService(ctx context.Context, targetPath string, data model.ServiceTemplateData) error {

@@ -15,8 +15,11 @@ type fiberGenerator struct {
 	writer contract.Writer
 }
 
-func newfiberGenerator() *fiberGenerator {
-	return &fiberGenerator{}
+func newFiberGenerator(logger *slog.Logger, writer contract.Writer) *fiberGenerator {
+	return &fiberGenerator{
+		logger: logger,
+		writer: writer,
+	}
 }
 
 func (b *fiberGenerator) GenerateHandler(ctx context.Context, targetPath string, data model.HandlerTemplateData) error {

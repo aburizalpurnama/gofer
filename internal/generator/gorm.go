@@ -15,8 +15,11 @@ type gormGenerator struct {
 	writer contract.Writer
 }
 
-func newGormGenerator() *gormGenerator {
-	return &gormGenerator{}
+func newGormGenerator(logger *slog.Logger, writer contract.Writer) *gormGenerator {
+	return &gormGenerator{
+		logger: logger,
+		writer: writer,
+	}
 }
 
 // func (b *generator) Generate(ctx context.Context, targetPath string, data model.ModelTemplateData) error {
@@ -26,7 +29,7 @@ func newGormGenerator() *gormGenerator {
 // }
 
 func (b *gormGenerator) GenerateModel(ctx context.Context, targetPath string, data model.ModelTemplateData) error {
-	return b.writer.WriteModel(ctx, targetPath, "gorm_model.go.tpl", data)
+	return b.writer.WriteModel(ctx, targetPath, "model_gorm.go.tpl", data)
 }
 
 func (b *gormGenerator) GenerateRepository(ctx context.Context, targetPath string, data model.RepositoryTemplateData) error {

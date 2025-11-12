@@ -20,7 +20,7 @@ type writer struct {
 }
 
 func New(logger *slog.Logger) (*writer, error) {
-	tmpl, err := textTemplate.New("base").ParseFS(template.Content, "model/*", "repository/*", "service/*")
+	tmpl, err := textTemplate.New("base").ParseFS(template.Content, "*.tpl", "model/*", "repository/*")
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse template from embed.FS: %w", err)
 	}

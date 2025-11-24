@@ -59,3 +59,33 @@ type RoutesTemplateData struct {
 	TableName   string
 	Fields      []TemplateField
 }
+
+type ServiceContractTemplateData struct {
+	PackageName string
+	ModulePath  string
+
+	InterfaceName    string
+	EntityName       string
+	EntityNamePlural string
+	EntityVarName    string
+
+	PrimaryKeyType string
+}
+
+// Data untuk satu method repository di dalam UoW
+type UoWRepositoryData struct {
+	MethodName    string
+	InterfaceType string
+}
+
+// Data utama untuk template UoW
+type UoWTemplateData struct {
+	PackageName   string
+	InterfaceName string
+	Repositories  []UoWRepositoryData
+}
+
+type DatabaseTemplateData struct {
+	PackageName string // e.g., "database"
+	ModulePath  string // e.g., "github.com/aburizalpurnama/travel"
+}

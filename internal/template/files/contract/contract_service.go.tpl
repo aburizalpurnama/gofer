@@ -1,26 +1,26 @@
-package contract
+package {{ .PackageName }}
 
 import (
 	"context"
 
-	{{ .ModuleName }}/internal/app/payload"
-	{{ .ModuleName }}/internal/pkg/response"
+	"{{ .ModulePath }}/internal/app/payload"
+	"{{ .ModulePath }}/internal/pkg/response"
 )
 
-// UserService mendefinisikan logika bisnis yang bisa dilakukan pada model.User
-type UserService interface {
-	CreateUser(ctx context.Context, req payload.UserCreateRequest) (*payload.UserResponse, error)
-	GetAllUsers(ctx context.Context, req payload.UserGetAllRequest) ([]payload.UserResponse, *response.Pagination, error)
-	GetUserByID(ctx context.Context, id uint) (*payload.UserResponse, error)
-	UpdateUser(ctx context.Context, id uint, req payload.UserUpdateRequest) (*payload.UserResponse, error)
-	DeleteUser(ctx context.Context, id uint) error
-}
+// {{ .InterfaceName }} defines the business logic operations available for the {{ .EntityName }} model.
+type {{ .InterfaceName }} interface {
+	// Create{{ .EntityName }} handles the creation of a new {{ .EntityVarName }} based on the provided request.
+	Create{{ .EntityName }}(ctx context.Context, req payload.{{ .EntityName }}CreateRequest) (*payload.{{ .EntityName }}BaseResponse, error)
 
-// ProductService mendefinisikan logika bisnis yang bisa dilakukan pada model.Product
-type ProductService interface {
-	CreateProduct(ctx context.Context, req payload.ProductCreateRequest) (*payload.ProductBaseResponse, error)
-	GetAllProducts(ctx context.Context, req payload.ProductGetAllRequest) ([]payload.ProductBaseResponse, *response.Pagination, error)
-	GetProductByID(ctx context.Context, id uint) (*payload.ProductBaseResponse, error)
-	UpdateProduct(ctx context.Context, id uint, req payload.ProductUpdateRequest) (*payload.ProductBaseResponse, error)
-	DeleteProduct(ctx context.Context, id uint) error
+	// GetAll{{ .EntityNamePlural }} retrieves a list of {{ .EntityVarName }}s matching the criteria in the request, including pagination.
+	GetAll{{ .EntityNamePlural }}(ctx context.Context, req payload.{{ .EntityName }}GetAllRequest) ([]payload.{{ .EntityName }}BaseResponse, *response.Pagination, error)
+
+	// Get{{ .EntityName }}ByID retrieves the details of a specific {{ .EntityVarName }} identified by its ID.
+	Get{{ .EntityName }}ByID(ctx context.Context, id {{ .PrimaryKeyType }}) (*payload.{{ .EntityName }}BaseResponse, error)
+
+	// Update{{ .EntityName }} modifies an existing {{ .EntityVarName }} identified by its ID with the provided update data.
+	Update{{ .EntityName }}(ctx context.Context, id {{ .PrimaryKeyType }}, req payload.{{ .EntityName }}UpdateRequest) (*payload.{{ .EntityName }}BaseResponse, error)
+
+	// Delete{{ .EntityName }} removes a {{ .EntityVarName }} identified by its ID from the system.
+	Delete{{ .EntityName }}(ctx context.Context, id {{ .PrimaryKeyType }}) error
 }
